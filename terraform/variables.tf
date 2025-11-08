@@ -67,5 +67,5 @@ variable "api_stage_name" {
 variable "aws_region" {
   description = "AWS region for deployment"
   type        = string
-  default     = "us-east-1"
+  default     = "ap-south-1"
 }

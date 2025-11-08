@@ -1,0 +1,30 @@
+# AWS Lambda & Terraform Commands Description
+
+# 1. Invoke the Lambda function locally and save output to out.json
+awslocal lambda invoke --function-name SpringBootLambdaFunction out.json
+
+# 2. Build a shaded JAR (fat JAR) with all dependencies
+mvn clean package -Pshaded-jar
+
+# 3. Build a ZIP package (for Lambda deployment)
+mvn clean package -Passembly-zip
+
+# 4. Stream and follow Lambda logs in real-time
+awslocal logs tail /aws/lambda/SpringBootLambdaFunction --follow
+
+# 5. Initialize Terraform for LocalStack environment
+tflocal init
+
+# 6. Preview Terraform deployment changes
+tflocal plan -var-file="terraform.tfvars"
+terraform plan -var-file="terraform.tfvars"
+
+# 7. Deploy all Terraform resources automatically
+tflocal apply -var-file="terraform.tfvars" -auto-approve
+terraform apply -var-file="terraform.tfvars" -auto-approve
+
+# 8. Import existing IAM role into Terraform state (avoids recreation)
+tflocal import aws_iam_role.lambda_exec_role lambda_exec_role
+
+# 9. Verify if StreamLambdaHandler class exists in the built ZIP
+jar tf target/springboot-aws-lambda-api-gateway-1.0-SNAPSHOT.zip | grep StreamLambdaHandler

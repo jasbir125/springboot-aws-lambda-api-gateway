@@ -124,6 +124,8 @@ resource "aws_lambda_permission" "api_gateway_lambda" {
 # Output
 # ---------------------------------
 output "spring_boot_lambda_api_url_localstack" {
-  description = "Invoke URL for Spring Boot Lambda via API Gateway (LocalStack)"
-  value       = "http://localhost:4566/restapis/${aws_api_gateway_rest_api.spring_boot_lambda_api.id}/${var.api_stage_name}/_user_request_/"
+  description = "Invoke URL for Spring Boot Lambda via API Gateway (LocalStack or aws)"
+  #value       = "http://localhost:4566/restapis/${aws_api_gateway_rest_api.spring_boot_lambda_api.id}/${var.api_stage_name}/_user_request_/"
+  value =  "https://${aws_api_gateway_rest_api.spring_boot_lambda_api.id}.execute-api.${var.aws_region}.amazonaws.com/${var.api_stage_name}/"
+
 }

@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:4.10.0
+    ports:
+      - "127.0.0.1:4566:4566"            # Edge proxy (main entrypoint)
+      - "127.0.0.1:4510-4559:4510-4559"  # Service-specific ports
+    environment:
+      - LOCALSTACK_HOSTNAME=localhost.localstack.cloud
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
+      - SERVICES=apigateway,cloudformation,cloudwatch,dynamodb,ec2,iam,kinesis,lambda,logs,s3,secretsmanager,ses,sns,sqs,ssm,sts,events
+      - DEBUG=1
+      - DATA_DIR=/var/lib/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      # Optional: speeds up lambda invocation
+      - LAMBDA_EXECUTOR=docker-reuse
+      - LAMBDA_REMOTE_DOCKER=false
+      - LS_LOG=trace
+    security_opt:
+      - "label=disable"
+    volumes:
+      - ./tmp/localstack:/var/lib/localstack
+      - ./shared:/shared
+      - /var/run/docker.sock:/var/run/docker.sock:z
+    networks:
+      default:
+        aliases:
+          - localhost.localstack.cloud
+
+networks:
+  default:
+    name: localstack-network
