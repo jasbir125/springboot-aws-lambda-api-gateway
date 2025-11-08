@@ -1,0 +1,7 @@
+aws_region           = "us-east-1"
+lambda_function_name = "SpringBootLambdaFunction"
+lambda_handler       = "com.singh.StreamLambdaHandler::handleRequest"
+lambda_jar_path      = "../target/springboot-aws-lambda-api-gateway-1.0-SNAPSHOT.zip"
+lambda_s3_key        = "springboot-aws-lambda-api-gateway-1.0-SNAPSHOT.zip"
+api_gateway_name     = "SpringBootLambdaApi"
+api_stage_name       = "prod"
